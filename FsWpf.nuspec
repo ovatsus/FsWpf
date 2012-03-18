@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Gustavo Guerra</authors>
+    <owners>Gustavo Guerra</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://github.com/ovatsus/FsWpf</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <tags>F# WPF</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\FsWpf.dll" target="lib\net40\FsWpf.dll" />
+    <file src="bin\Release\FsWpf.XML" target="lib\net40\FsWpf.XML" />
+  </files>
+</package>
