@@ -1,5 +1,6 @@
 ﻿namespace FsWpf
 
+open System.Diagnostics
 open System.Reflection
 open System.Windows
 open System.Windows.Markup 
@@ -13,8 +14,14 @@ open System.Windows.Markup
 type FsUiObject<'T when 'T :> FrameworkElement> (xamlPath) as this = 
     
     let loadXaml () = 
-        use resourceStrem = Assembly.GetExecutingAssembly().GetManifestResourceStream(xamlPath)
-        XamlReader.Load(resourceStrem)
+        let currentAssembly = Assembly.GetExecutingAssembly()
+        let stackTrace = new StackTrace()
+        let assembly =
+            stackTrace.GetFrames() 
+            |> Seq.map (fun frame -> frame.GetMethod().DeclaringType.Assembly)
+            |> Seq.find (fun asm -> asm <> currentAssembly)
+        use resourceStream = assembly.GetManifestResourceStream(xamlPath)
+        XamlReader.Load(resourceStream)
 
     let uiObj = loadXaml() :?> 'T
      
