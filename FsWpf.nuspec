@@ -19,8 +19,4 @@
             <frameworkAssembly assemblyName="WindowsBase" targetFramework="" />
         </frameworkAssemblies>
     </metadata>
-    <files>
-        <file src="bin\Release\FsWpf.dll" target="lib\net40\FsWpf.dll" />
-        <file src="bin\Release\FsWpf.XML" target="lib\net40\FsWpf.XML" />
-    </files>
 </package>
