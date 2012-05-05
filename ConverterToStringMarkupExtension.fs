@@ -1,7 +1,5 @@
 ﻿namespace FsWpf
 
-open System
-
 [<AbstractClass>]
 type ConverterToStringMarkupExtension<'OriginalType>() =        
     inherit ConverterMarkupExtension<'OriginalType, string>()

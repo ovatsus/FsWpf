@@ -39,13 +39,16 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <None Include="FsWpf.nuspec" />
+    <Compile Include="Utilities.fs" />
     <Compile Include="ViewModelBase.fs" />
     <Compile Include="FsUiObject.fs" />
     <Compile Include="FsWindow.fs" />
     <Compile Include="ICommand.fs" />
+    <Compile Include="IValueConverter.fs" />
     <Compile Include="CommandMarkupExtension.fs" />
     <Compile Include="ConverterMarkupExtension.fs" />
     <Compile Include="ConverterToStringMarkupExtension.fs" />
+    <Compile Include="Converters.fs" />
     <Compile Include="BindableWebBrowser.fs" />
     <Compile Include="NoWheelScrollViewer.fs" />
   </ItemGroup>

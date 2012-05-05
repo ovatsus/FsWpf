@@ -16,6 +16,7 @@
             <frameworkAssembly assemblyName="PresentationFramework" targetFramework="" />
             <frameworkAssembly assemblyName="System.Xaml" targetFramework="" />
             <frameworkAssembly assemblyName="System.Xml" targetFramework="" />
+            <frameworkAssembly assemblyName="UIAutomationTypes" targetFramework="" />
             <frameworkAssembly assemblyName="WindowsBase" targetFramework="" />
         </frameworkAssemblies>
     </metadata>

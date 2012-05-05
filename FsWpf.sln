@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsWpf", "FsWpf.fsproj", "{6DDB4283-BD8E-4ED5-9D5E-CE329202E093}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0E1E2672-2249-4DA3-94D7-992B898C2890}"
