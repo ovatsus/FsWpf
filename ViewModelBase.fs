@@ -18,5 +18,5 @@ type ViewModelBase() =
         [<CLIEvent>]
         member x.PropertyChanged = propertyChanged.Publish
 
-    member x.OnPropertyChanged expr =
+    member x.NotityPropertyChanged expr =
         propertyChanged.Trigger(x, new PropertyChangedEventArgs(toPropName expr))

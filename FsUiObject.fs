@@ -13,6 +13,8 @@ open System.Windows.Markup
 /// All the [<DefaultValue>] mutable val's will be set to the elements with the same name in XAML
 type FsUiObject<'T when 'T :> FrameworkElement> (xamlPath) as this = 
     
+    inherit ViewModelBase()
+
     let loadXaml () = 
         let currentAssembly = Assembly.GetExecutingAssembly()
         let stackTrace = new StackTrace()

@@ -12,23 +12,29 @@ type CommandMarkupExtension<'CommandParameterType>() as this =
 
     inherit MarkupExtension()
 
-    let canExecuteChangedEvent = new DelegateEvent<EventHandler>()   
+    let canExecuteChangedEvent = new Event<_, _>()
+
+    let convert (param : obj) = 
+        if param = null then 
+            Unchecked.defaultof<'CommandParameterType>
+        else 
+            param :?> 'CommandParameterType
 
     member x.TriggerCanExecuteChanged() = 
-        canExecuteChangedEvent.Trigger([| x; EventArgs.Empty |])
+        canExecuteChangedEvent.Trigger(x, EventArgs.Empty)
 
     override x.ProvideValue serviceProvider = 
 
         { new ICommand with   
             [<CLIEvent>] member x.CanExecuteChanged = canExecuteChangedEvent.Publish        
-            member x.CanExecute param = this.CanExecute (if param = null then None else Some (param :?> 'CommandParameterType))
-            member x.Execute param = this.Execute (if param = null then None else Some (param :?> 'CommandParameterType))
+            member x.CanExecute param = this.CanExecute (convert param)
+            member x.Execute param = this.Execute (convert param)
         } :> obj
 
-    abstract member CanExecute : 'CommandParameterType option -> bool
-    default x.CanExecute param = param.IsSome
+    abstract member CanExecute : 'CommandParameterType -> bool
+    default x.CanExecute param = not (obj.ReferenceEquals(param, null))
 
-    abstract member Execute : 'CommandParameterType option -> unit
+    abstract member Execute : 'CommandParameterType -> unit
 
 [<AbstractClass>]
 type CommandMarkupExtension<'CommandParameterType, 'RootObjectDataContextType>() as this =
@@ -36,10 +42,16 @@ type CommandMarkupExtension<'CommandParameterType, 'RootObjectDataContextType>()
     inherit MarkupExtension()
 
     let mutable rootObjectDataContext = None
-    let canExecuteChangedEvent = new DelegateEvent<EventHandler>()   
+    let canExecuteChangedEvent = new Event<_, _>()   
+
+    let convert (param : obj) = 
+        if param = null then 
+            Unchecked.defaultof<'CommandParameterType>
+        else 
+            param :?> 'CommandParameterType
 
     member x.TriggerCanExecuteChanged() = 
-        canExecuteChangedEvent.Trigger([| x; EventArgs.Empty |])
+        canExecuteChangedEvent.Trigger(x, EventArgs.Empty)
 
     override x.ProvideValue serviceProvider = 
 
@@ -52,11 +64,11 @@ type CommandMarkupExtension<'CommandParameterType, 'RootObjectDataContextType>()
  
         { new ICommand with   
             [<CLIEvent>] member x.CanExecuteChanged = canExecuteChangedEvent.Publish        
-            member x.CanExecute param = this.CanExecute (if param = null then None else Some (param :?> 'CommandParameterType)) (getRoot())
-            member x.Execute param = this.Execute (if param = null then None else Some (param :?> 'CommandParameterType)) (getRoot())
+            member x.CanExecute param = this.CanExecute (convert param) (getRoot())
+            member x.Execute param = this.Execute (convert param) (getRoot())
         } :> obj
 
-    abstract member CanExecute : 'CommandParameterType option -> 'RootObjectDataContextType -> bool
-    default x.CanExecute param _ = param.IsSome
+    abstract member CanExecute : 'CommandParameterType -> 'RootObjectDataContextType -> bool
+    default x.CanExecute param _ = not (obj.ReferenceEquals(param, null))
 
-    abstract member Execute : 'CommandParameterType option -> 'RootObjectDataContextType -> unit
+    abstract member Execute : 'CommandParameterType -> 'RootObjectDataContextType -> unit

@@ -8,7 +8,39 @@ open System.Windows.Markup
 open System.Xaml
 
 [<AbstractClass>]
-type ConverterMarkupExtension<'ConvertedValueType, 'RootObjectDataContextType>() as this =    
+type ConverterMarkupExtension<'OriginalType, 'ConvertedToType>() as this =    
+    
+    inherit MarkupExtension()
+    
+    override x.ProvideValue serviceProvider = 
+    
+        { new IValueConverter with
+               
+            override x.Convert(value, targetType, parameter, culture) =
+                let castedValue = 
+                    if value = null then 
+                        Unchecked.defaultof<'OriginalType>
+                    else 
+                        value :?> 'OriginalType
+                this.Convert castedValue :> obj
+
+            override x.ConvertBack(value, targetType, parameter, culture) =
+                failwith "ConvertBack not supported"
+
+        } :> obj
+    
+    abstract member Convert : 'OriginalType -> 'ConvertedToType
+    default x.Convert param = 
+        if obj.ReferenceEquals(param, null) then
+            Unchecked.defaultof<'ConvertedToType>
+        else
+            x.ConvertWhenNotNull param
+
+    abstract member ConvertWhenNotNull : 'OriginalType -> 'ConvertedToType
+    default x.ConvertWhenNotNull _ = Unchecked.defaultof<'ConvertedToType>
+
+[<AbstractClass>]
+type ConverterMarkupExtension<'OriginalType, 'ConvertedToType, 'RootObjectDataContextType>() as this =    
     
     inherit MarkupExtension()
     
@@ -23,11 +55,27 @@ type ConverterMarkupExtension<'ConvertedValueType, 'RootObjectDataContextType>()
                 rootObjectDataContext <- rootObject.DataContext :?> 'RootObjectDataContextType |> Some
             rootObjectDataContext.Value
 
-        { new IValueConverter with            
+        { new IValueConverter with
+               
             override x.Convert(value, targetType, parameter, culture) =
-                if value = null then null else this.Convert (value :?> 'ConvertedValueType) (getRoot())
+                let castedValue = 
+                    if value = null then 
+                        Unchecked.defaultof<'OriginalType>
+                    else 
+                        value :?> 'OriginalType
+                this.Convert castedValue (getRoot()) :> obj
+
             override x.ConvertBack(value, targetType, parameter, culture) =
                 failwith "ConvertBack not supported"
+
         } :> obj
     
-    abstract member Convert : 'ConvertedValueType -> 'RootObjectDataContextType -> obj
+    abstract member Convert : 'OriginalType -> 'RootObjectDataContextType -> 'ConvertedToType
+    default x.Convert param root = 
+        if obj.ReferenceEquals(param, null) then
+            Unchecked.defaultof<'ConvertedToType>
+        else
+            x.ConvertWhenNotNull param root
+
+    abstract member ConvertWhenNotNull : 'OriginalType -> 'RootObjectDataContextType -> 'ConvertedToType
+    default x.ConvertWhenNotNull _ _ = Unchecked.defaultof<'ConvertedToType>
