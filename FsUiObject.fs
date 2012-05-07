@@ -5,24 +5,26 @@ open System.Reflection
 open System.Windows
 open System.Windows.Markup 
 
-// from http://v2matveev.blogspot.com/2010/03/f-and-wpf-or-how-to-make-life-bit.html
+// based on http://v2matveev.blogspot.com/2010/03/f-and-wpf-or-how-to-make-life-bit.html
 
 [<AbstractClass>]
-/// Usage: FsUiObject<FrameworkElement>(__SOURCE_FILE__.Replace(".fs", ".xaml"))
-/// The FsUiObject will be set as the data context of the FrameworkElement
+/// Assumes there's a TypeName.xaml file in the project with build action set to EmbeddedResource
 /// All the [<DefaultValue>] mutable val's will be set to the elements with the same name in XAML
-type FsUiObject<'T when 'T :> FrameworkElement> (xamlPath) as this = 
+/// The FsUiObject will be set as the data context of the FrameworkElement
+type FsUiObject<'T when 'T :> FrameworkElement>() as this = 
     
     inherit ViewModelBase()
 
     let loadXaml () = 
+
         let currentAssembly = Assembly.GetExecutingAssembly()
         let stackTrace = new StackTrace()
         let assembly =
             stackTrace.GetFrames() 
             |> Seq.map (fun frame -> frame.GetMethod().DeclaringType.Assembly)
             |> Seq.find (fun asm -> asm <> currentAssembly)
-        use resourceStream = assembly.GetManifestResourceStream(xamlPath)
+
+        use resourceStream = assembly.GetManifestResourceStream(this.GetType().Name + ".xaml")
         XamlReader.Load(resourceStream)
 
     let uiObj = loadXaml() :?> 'T

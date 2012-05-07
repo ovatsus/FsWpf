@@ -5,7 +5,7 @@ open System.Reflection
 [<assembly: AssemblyTitle "FsWpf">]
 [<assembly: AssemblyDescription "F# helpers for WPF">]
 [<assembly: AssemblyProduct "FsWpf">]
-[<assembly: AssemblyVersion "1.2.0">]
-[<assembly: AssemblyFileVersion "1.2.0">]
+[<assembly: AssemblyVersion "1.3.0">]
+[<assembly: AssemblyFileVersion "1.3.0">]
 
 ()

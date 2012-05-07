@@ -3,8 +3,8 @@
 open System.Windows
 
 [<AbstractClass>]
-/// Usage: FsWindow(__SOURCE_FILE__.Replace(".fs", ".xaml"))
-/// The FsWindow will be set as the data context of the Window
+/// Assumes there's a TypeName.xaml file in the project with build action set to EmbeddedResource
 /// All the [<DefaultValue>] mutable val's will be set to the elements with the same name in XAML
-type FsWindow(xamlPath) = 
-    inherit FsUiObject<Window>(xamlPath)
+/// The FsWindow will be set as the data context of the Window
+type FsWindow() = 
+    inherit FsUiObject<Window>()
