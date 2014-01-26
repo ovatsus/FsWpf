@@ -35,11 +35,10 @@ type FsUiObject<'T when 'T :> FrameworkElement>() as this =
         let fields = 
             this.GetType().GetFields(flags) 
             |> Seq.choose (fun f -> 
-                let attrs =  f.GetCustomAttributes(typeof<Microsoft.FSharp.Core.DefaultValueAttribute>, false)
+                let attrs =  f.GetCustomAttributes(false) |> Array.filter (fun attr -> attr.GetType().FullName = "Microsoft.FSharp.Core.DefaultValueAttribute")
                 if attrs.Length = 0 then 
                     None                    
                 else
-                    let attr = attrs.[0] :?> Microsoft.FSharp.Core.DefaultValueAttribute
                     Some(f, f.Name))
         for field, name in fields do
             let value = uiObj.FindName(name)
