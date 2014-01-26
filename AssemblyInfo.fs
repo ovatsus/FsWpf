@@ -1,4 +1,4 @@
-﻿module FsLab.AssemblyInfo
+﻿module FsWpf.AssemblyInfo
 
 open System.Reflection
 
